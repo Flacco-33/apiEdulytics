@@ -1,0 +1,13 @@
+from pymongo.mongo_client import MongoClient
+
+uri = "mongodb+srv://flacco:o66tBRTzHfiKspjH@edulytics01.l037g.mongodb.net/?retryWrites=true&w=majority&appName=edulytics01"
+
+# Create a new client and connect to the server
+conn = MongoClient(uri)
+
+# Send a ping to confirm a successful connection
+try:
+    conn.admin.command('ping')
+    print("Pinged your deployment. You successfully connected to MongoDB!")
+except Exception as e:
+    print(e)
