@@ -68,9 +68,11 @@ async def video_analysis(analisis:AnalisisModelVideo):
     This endpoint receives video analysis data, processes it asynchronously, and returns a confirmation message.
 
     **Args:**
+        
         analisis (AnalisisModelVideo): The video analysis data model.
 
     **Returns:**
+        
         dict: A dictionary containing a confirmation message .
     """
     url = url_video
@@ -132,10 +134,13 @@ async def text_analysis(analisis:AnalysisModelText):
     This endpoint receives text analysis data, processes it asynchronously, and returns a confirmation message.
     
     **Args:**
+        
         analisis (AnalysisModelText): The text analysis data model.
     
     **Returns:**
+        
         dict: A dictionary containing a confirmation message or an error message.
+    
     """
     try:
         url = url_text
