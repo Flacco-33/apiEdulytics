@@ -1,21 +1,27 @@
 import json
-from fastapi import APIRouter, Response, status
+from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
 from config.db import conn as db
 from models.analysis_video import DataAnalysisVideo as AnalisisModelVideo
 from models.analysis_text import DataAnalysisText as AnalysisModelText
 from models.response_analysis import responseAnalysis as ResponseModel 
 from bson import ObjectId
-from decouple import config
 import asyncio
+import os
 from gradio_client import Client
 import httpx
+from dotenv import load_dotenv
+
+load_dotenv()
 
 analysis = APIRouter()
 
 responses = {
     503: {"description": "The server is not available"}
 }
+
+url_video = os.getenv('URL_VIDEO')
+url_text = os.getenv('URL_TEXT')
 
 async def process_data_video(analisis:AnalisisModelVideo):
     """
@@ -35,7 +41,7 @@ async def process_data_video(analisis:AnalisisModelVideo):
     """
     anlisysData = dict(analisis)
     url = anlisysData["video_url"]
-    client = Client("https://normally-ready-flea.ngrok-free.app/")
+    client = Client(url_video)
     result = client.predict(
     		video_url=url,
     		api_name="/predict"
@@ -62,12 +68,14 @@ async def video_analysis(analisis:AnalisisModelVideo):
     This endpoint receives video analysis data, processes it asynchronously, and returns a confirmation message.
 
     **Args:**
+        
         analisis (AnalisisModelVideo): The video analysis data model.
 
     **Returns:**
+        
         dict: A dictionary containing a confirmation message .
     """
-    url = "https://normally-ready-flea.ngrok-free.app/"
+    url = url_video
     try:
         is_server_alive = await check_server_health(url)
         if not is_server_alive:
@@ -100,7 +108,7 @@ async def process_data_text(analisis:AnalysisModelText):
     """
     anlisysData = dict(analisis)
     comment = anlisysData["comment"]
-    client = Client("http://127.0.0.1:7863/")
+    client = Client(url_text)
     result = client.predict(
     		comment=comment,
     		api_name="//analyze_comment"
@@ -126,13 +134,16 @@ async def text_analysis(analisis:AnalysisModelText):
     This endpoint receives text analysis data, processes it asynchronously, and returns a confirmation message.
     
     **Args:**
+        
         analisis (AnalysisModelText): The text analysis data model.
     
     **Returns:**
+        
         dict: A dictionary containing a confirmation message or an error message.
+    
     """
     try:
-        url = "http://127.0.0.1:7862/"
+        url = url_text
         is_server_alive = await check_server_health(url)
         if not is_server_alive:
             return JSONResponse(

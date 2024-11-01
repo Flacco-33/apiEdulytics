@@ -8,8 +8,26 @@ from schemas.data_match import videoAnalysisEntity, textAnalysisEntity, matchEnt
 
 dataMatch = APIRouter()
 
-@dataMatch.get("/dataMatch",response_model=ResponseModel, tags=["DataMatch"], summary="Group data from video and text analysis")
+@dataMatch.get("/dataMatch",response_model=ResponseModel, tags=["Data_Match"], summary="Group data from video and text analysis")
 def data_match():
+    """
+        Groups data from video and text analysis and returns the matched results.
+        
+        Returns:
+        
+            ResponseModel: The response model containing the matched data.
+        
+        Steps:
+        
+            1. Retrieves video analysis data from the database.
+            2. Retrieves text analysis data from the database.
+            3. Formats the retrieved video and text data.
+            4. Compares the formatted video and text data based on specific criteria.
+            5. Constructs the matching results if the criteria are met.
+            6. Updates the ResponseModel with the matching results.
+            7. Returns the updated ResponseModel.
+
+    """
     videos = list(db.analysis.videoAnalysis.find({}))
     texts = list(db.analysis.textAnalysis.find({}))
     

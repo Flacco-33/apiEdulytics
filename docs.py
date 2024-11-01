@@ -1,13 +1,6 @@
 tags_metadata = [{
-    "name": "users",
-    "description": "Operations with users. The **login** logic is also here.",
-    },{
     "name": "Analysis",
     "description": "Receives **text** or **video** data, sends it to servers for **analysis**, and returns a message confirming receipt of the data."
-    },
-    {
-    "name": "textAnalysis",
-    "description": "Video analysis where it returns the metadata as well as the user's emotions based on their facial expressions"
     },
     {
         "name": "teacher_comments",
@@ -15,5 +8,12 @@ tags_metadata = [{
     },{
         "name": "Save_Data",
         "description": "Save data in MongoDB"    
+    },{
+        "name": "Data_Match",
+        "description": "Match data from different sources"
+    },
+    {
+        "name": "Get_evaluation",
+        "description": "Get evaluation data from a teacher"    
     },
 ]
