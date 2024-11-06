@@ -31,7 +31,7 @@ def get_comments_by_aspects(document):
     
     return aspects_list
 
-@analysisTeacher.get("/teacher_comments", response_model=List[TeacherComments], tags=["teacher_comments"])
+@analysisTeacher.get("/teacher_comments", response_model=List[TeacherComments], tags=["Teacher_comments"])
 async def get_all_teacher_comments():
     """
     Asynchronously retrieves all teacher comments from the database and organizes them by aspects.
