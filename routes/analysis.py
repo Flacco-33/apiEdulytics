@@ -22,6 +22,7 @@ responses = {
 
 url_video = os.getenv('URL_VIDEO')
 url_text = os.getenv('URL_TEXT')
+url_analysis = os.getenv('URL_ANALYSIS')
 
 async def process_data_video(analisis:AnalisisModelVideo):
     """
@@ -155,6 +156,53 @@ async def text_analysis(analisis:AnalysisModelText):
     except Exception as e:
             return ({ "error": str(e) })
     
+
+"""
+    Analysis Data
+"""
+async def process_analysis_data():
+    """
+    Asynchronously processes analysis data by sending a request to an analysis API.
+    This function creates a client instance with the specified analysis URL, sends a prediction request
+    to the API endpoint "//analyze_comment", and prints the result.
+    """
+   
+    client = Client(url_analysis)
+    result = client.predict(
+    		api_name="//combined_analysis"
+    )
+    print(result)
+    pass
+        
+@analysis.post('/analysisData', response_model=ResponseModel,responses=responses, tags=["Analysis_data"], summary="Analysis data")
+async def analysis_data():
+    """
+    Endpoint to perform text analysis.
+
+    This endpoint receives a request to analyze text data and processes it asynchronously.
+    It first checks if the text analysis server is available. If the server is not available,
+    it returns a 503 Service Unavailable response. If the server is available, it creates
+    an asynchronous task to process the analysis data and returns a response indicating
+    that the data has been received.
+
+    Returns:
+    
+        JSONResponse: A response indicating the status of the text analysis request.
+    
+    """
+    try:
+        url = url_analysis
+        is_server_alive = await check_server_health(url)
+        if not is_server_alive:
+            return JSONResponse(
+                content={"message": "The text analysis server is not available."},
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE
+            )
+        asyncio.create_task(process_analysis_data())
+        return ResponseModel(message="Datos recibidos")
+    except Exception as e:
+            return ({ "error": str(e) })
+
 
 async def check_server_health(server_url: str) -> bool:
     """
